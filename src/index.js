@@ -96,7 +96,7 @@ class LanguageDetector {
     }
 
     cacheUserLanguage(ctx, lng, caches) {
-        if (arguments.length < 3) {
+        if (arguments.length < 2) {
             return;
         }
         if (!caches) {
