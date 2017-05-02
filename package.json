@@ -27,7 +27,7 @@
     "keywords": [
         "i18next detector koa"
     ],
-    "author": "sli <sli@movoto.com>",
+    "author": "lxzxl <lixiaozheng1990@gmail.com>",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/lxzxl/koa-i18next-detector/issues"
