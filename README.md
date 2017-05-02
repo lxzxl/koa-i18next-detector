@@ -46,9 +46,11 @@ npm i -D koa-i18next-detector
 ## Usage
 
 ```js
+const i18next = require('i18next')
 import koaI18nextDetector from "koa-i18next-detector"
 
-koaI18nextDetector() // true
+i18next.use(LanguageDetector)
+
 ```
 
 ## License
