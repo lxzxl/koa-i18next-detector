@@ -53,7 +53,7 @@ koaI18nextDetector() // true
 
 ## License
 
-MIT © [sli](http://github.com/lxzxl)
+MIT © [lxzxl](http://github.com/lxzxl)
 
 [npm-url]: https://npmjs.org/package/koa-i18next-detector
 [npm-image]: https://img.shields.io/npm/v/koa-i18next-detector.svg?style=flat-square
