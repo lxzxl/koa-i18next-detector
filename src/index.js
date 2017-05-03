@@ -1,40 +1,39 @@
 const assert = require('assert');
 import querystringLookup from './lookups/querystring';
 import pathLookup from './lookups/path';
-// import cookieLookup from './languageLookups/cookie';
-// import headerLookup from './languageLookups/header';
-// import sessionLookup from './languageLookups/session';
+import cookieLookup from './lookups/cookie';
+// import headerLookup from './lookups/header';
+// import sessionLookup from './lookups/session';
 
-function getDefaults() {
+function getDefaultsOpt() {
     return {
-        detectors: [{
-                name: 'querystring',
-                lookupQuerystring: 'lng',
-            },
-            {
-                name: 'path',
-                lookupParam: 'lng', // for route like: 'path1/:lng/result'
-                lookupFromPathIndex: 0
-            },
-            {
-                name: 'cookie',
-                lookupCookie: 'i18next',
-            },
-            {
-                name: 'header',
-            },
-            {
-                name: 'session',
-                lookupSession: 'lng'
-            }
-        ],
+        order: ['querystring', 'path', 'cookie', 'header', 'session'],
+
+        lookupQuerystring: 'lng',
+
+        lookupParam: 'lng', // for route like: 'path1/:lng/result'
+        lookupFromPathIndex: 0,
+
+        lookupCookie: 'i18next',
+        cookieExpirationDate: new Date(),
+        cookieDomain: 'myDomain',
+
+        lookupSession: 'lng',
 
         // cache user language
-        caches: false,
-        // ['cookie']
-        //cookieExpirationDate: new Date(),
-        //cookieDomain: 'myDomain'
+        caches: false, //['cookie']
     };
+}
+
+function defaults(obj) {
+    Array.from(arguments).slice(1).forEach(source => {
+        if (source) {
+            for (var prop in source) {
+                if (obj[prop] === undefined) obj[prop] = source[prop];
+            }
+        }
+    });
+    return obj;
 }
 
 class LanguageDetector {
@@ -47,7 +46,7 @@ class LanguageDetector {
 
     init(services, options = {}, i18nextOptions = {}) {
         this.services = services;
-        this.options = Object.assign({}, getDefaults(), this.options || {}, options);
+        this.options = defaults(options, this.options || {}, getDefaultsOpt());
         this.i18nextOptions = i18nextOptions;
         try {
             this.addDetector(querystringLookup);
@@ -71,14 +70,16 @@ class LanguageDetector {
         }
 
         let found;
-        this.options.detectors.forEach(detectorOpt => {
-            if (found || !this.detectors[detectorOpt.name]) {
+        this.options.order.forEach(detectorName => {
+            if (found || !this.detectors[detectorName] || !this.detectors[detectorName].lookup) {
                 return;
             }
 
-            let detections = this.detectors[detectorOpt.name].lookup(ctx, detectorOpt);
+            let detections = this.detectors[detectorName].lookup(ctx, this.options);
             if (!detections) return;
-            if (typeof detections === 'string') detections = [detections];
+            if (typeof detections === 'string') {
+                detections = [detections];
+            }
 
             detections.forEach(lng => {
                 if (found) return;
@@ -87,7 +88,7 @@ class LanguageDetector {
 
                 if (this.services.languageUtils.isWhitelisted(cleanedLng)) {
                     found = cleanedLng;
-                    ctx.i18nextLookupName = detectorOpt.name;
+                    ctx.i18nextLookupName = detectorName;
                 };
             });
         });
@@ -106,8 +107,9 @@ class LanguageDetector {
             return;
         }
         caches.forEach(cacheName => {
-            if (this.detectors[cacheName] && this.detectors[cacheName].cacheUserLanguage) {
-                this.detectors[cacheName].cacheUserLanguage(ctx, lng, this.options);
+            let detector = this.detectors[cacheName];
+            if (detector && detector.cacheUserLanguage) {
+                detector.cacheUserLanguage(ctx, lng, this.options);
             }
         });
     }

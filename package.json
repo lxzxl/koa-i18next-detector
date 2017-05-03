@@ -47,5 +47,8 @@
     "tap-spec": "^4.1.1",
     "tape": "^4.2.2",
     "watch": "^0.16.0"
+  },
+  "dependencies": {
+    "cookies": "^0.7.0"
   }
 }
