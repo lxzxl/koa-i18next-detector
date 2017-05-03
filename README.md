@@ -40,7 +40,7 @@ A i18next language detecting plugin for Koa 2.0 framework.
 ## Install
 
 ```sh
-npm i -D koa-i18next-detector
+npm i -S koa-i18next-detector
 ```
 
 ## Usage
@@ -49,7 +49,26 @@ npm i -D koa-i18next-detector
 const i18next = require('i18next')
 import koaI18nextDetector from "koa-i18next-detector"
 
-i18next.use(LanguageDetector)
+i18next.use(LanguageDetector).init({
+    // other options...
+    detection: {
+        order: ['querystring', 'path', 'cookie', 'header', 'session'],
+
+        lookupQuerystring: 'lang',
+
+        lookupParam: 'lng', // for routes like: 'path1/:lng/result'
+        lookupFromPathIndex: 0,
+
+        lookupCookie: 'i18next',
+        cookieExpirationDate: new Date(),
+        cookieDomain: 'myDomain',
+
+        lookupSession: 'lng',
+
+        // cache user language
+        caches: false, //['cookie']
+    }
+})
 
 ```
 
