@@ -29,7 +29,7 @@ export default {
                 expires: expirationDate,
                 domain: options.cookieDomain,
                 httpOnly: false
-            })
+            });
         }
     }
 };

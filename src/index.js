@@ -15,8 +15,8 @@ function getDefaultsOpt() {
         lookupFromPathIndex: 0,
 
         lookupCookie: 'i18next',
-        cookieExpirationDate: new Date(),
-        cookieDomain: 'myDomain',
+        // cookieExpirationDate: new Date(),
+        // cookieDomain: '',
 
         lookupSession: 'lng',
 
