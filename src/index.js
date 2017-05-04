@@ -3,7 +3,7 @@ import querystringLookup from './lookups/querystring';
 import pathLookup from './lookups/path';
 import cookieLookup from './lookups/cookie';
 import headerLookup from './lookups/header';
-// import sessionLookup from './lookups/session';
+import sessionLookup from './lookups/session';
 
 function getDefaultsOpt() {
     return {

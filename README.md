@@ -72,10 +72,12 @@ i18next.use(i18m.LanguageDetector).init({
         lookupParam: 'lng', // for route like: 'path1/:lng/result'
         lookupFromPathIndex: 0,
 
+        // currently using ctx.cookies
         lookupCookie: 'i18next',
         // cookieExpirationDate: new Date(), // default: +1 year
         // cookieDomain: '', // default: current domain.
 
+        // currently using ctx.session
         lookupSession: 'lng',
 
         // cache user language
