@@ -49,6 +49,25 @@ npm i -S koa-i18next-detector
 const i18next = require('i18next');
 import koaI18nextDetector from "koa-i18next-detector";
 
+// add custom detector.
+lngDetector.addDetector({
+    name: 'mySessionDetector',
+
+    lookup(ctx, options) {
+        let found;
+        if (options.lookupSession && ctx && ctx.sessions) {
+            found = ctx.sessions[options.lookupMySession];
+        }
+        return found;
+    },
+
+    cacheUserLanguage(ctx, lng, options = {}) {
+        if (options.lookupMySession && ctx && ctx.session) {
+            ctx.session[options.lookupMySession] = lng;
+        }
+    }
+});
+
 i18next.use(i18m.LanguageDetector).init({
     fallbackLng: 'en',
     preload: ['en', 'es'],
@@ -65,7 +84,7 @@ i18next.use(i18m.LanguageDetector).init({
         }
     },
     detection: {
-        order: ['querystring', 'path', 'cookie', 'header', 'session'],
+        order: ['querystring', 'path', /*'cookie', 'header',*/ 'session', 'mySessionDetector'],
 
         lookupQuerystring: 'lng',
 
@@ -80,8 +99,11 @@ i18next.use(i18m.LanguageDetector).init({
         // currently using ctx.session
         lookupSession: 'lng',
 
+        // other options
+        lookupMySession: 'lang',
+
         // cache user language
-        caches: ['cookie']
+        caches: ['cookie', 'mySessionDetector']
     }
 }, (err, t) => {
     // initialized and ready to go!
