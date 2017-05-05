@@ -68,7 +68,7 @@ lngDetector.addDetector({
     }
 });
 
-i18next.use(i18m.LanguageDetector).init({
+i18next.use(koaI18nextDetector).init({
     fallbackLng: 'en',
     preload: ['en', 'es'],
     resources: {
@@ -110,8 +110,6 @@ i18next.use(i18m.LanguageDetector).init({
     const hw = i18next.t('key'); // hw = 'hello world'
     console.log(hw);
 });
-
-app.use(i18m.getHandler(i18next, { locals: 'locals' }));
 
 ```
 
