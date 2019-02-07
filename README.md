@@ -36,7 +36,6 @@
 A i18next language detecting plugin for Koa 2.0 framework.
 </big></p>
 
-
 ## Install
 
 ```sh
@@ -47,9 +46,10 @@ npm i -S koa-i18next-detector
 
 ```js
 const i18next = require('i18next');
-import koaI18nextDetector from "koa-i18next-detector";
+import koaI18nextDetector from 'koa-i18next-detector';
 
 // add custom detector.
+const lngDetector = new koaI18nextDetector();
 lngDetector.addDetector({
     name: 'mySessionDetector',
 
@@ -68,49 +68,56 @@ lngDetector.addDetector({
     }
 });
 
-i18next.use(koaI18nextDetector).init({
-    fallbackLng: 'en',
-    preload: ['en', 'es'],
-    resources: {
-        en: {
-            translation: {
-                "key": "hello world"
+i18next.use(lngDetector).init(
+    {
+        fallbackLng: 'en',
+        preload: ['en', 'es'],
+        resources: {
+            en: {
+                translation: {
+                    key: 'hello world'
+                }
+            },
+            es: {
+                translation: {
+                    key: 'es hello world es'
+                }
             }
         },
-        es: {
-            translation: {
-                "key": "es hello world es"
-            }
+        detection: {
+            order: [
+                'querystring',
+                'path',
+                /*'cookie', 'header',*/ 'session',
+                'mySessionDetector'
+            ],
+
+            lookupQuerystring: 'lng',
+
+            lookupParam: 'lng', // for route like: 'path1/:lng/result'
+            lookupFromPathIndex: 0,
+
+            // currently using ctx.cookies
+            lookupCookie: 'i18next',
+            // cookieExpirationDate: new Date(), // default: +1 year
+            // cookieDomain: '', // default: current domain.
+
+            // currently using ctx.session
+            lookupSession: 'lng',
+
+            // other options
+            lookupMySession: 'lang',
+
+            // cache user language
+            caches: ['cookie', 'mySessionDetector']
         }
     },
-    detection: {
-        order: ['querystring', 'path', /*'cookie', 'header',*/ 'session', 'mySessionDetector'],
-
-        lookupQuerystring: 'lng',
-
-        lookupParam: 'lng', // for route like: 'path1/:lng/result'
-        lookupFromPathIndex: 0,
-
-        // currently using ctx.cookies
-        lookupCookie: 'i18next',
-        // cookieExpirationDate: new Date(), // default: +1 year
-        // cookieDomain: '', // default: current domain.
-
-        // currently using ctx.session
-        lookupSession: 'lng',
-
-        // other options
-        lookupMySession: 'lang',
-
-        // cache user language
-        caches: ['cookie', 'mySessionDetector']
+    (err, t) => {
+        // initialized and ready to go!
+        const hw = i18next.t('key'); // hw = 'hello world'
+        console.log(hw);
     }
-}, (err, t) => {
-    // initialized and ready to go!
-    const hw = i18next.t('key'); // hw = 'hello world'
-    console.log(hw);
-});
-
+);
 ```
 
 ## License
@@ -119,14 +126,10 @@ MIT © [lxzxl](http://github.com/lxzxl)
 
 [npm-url]: https://npmjs.org/package/koa-i18next-detector
 [npm-image]: https://img.shields.io/npm/v/koa-i18next-detector.svg?style=flat-square
-
 [travis-url]: https://travis-ci.org/lxzxl/koa-i18next-detector
 [travis-image]: https://img.shields.io/travis/lxzxl/koa-i18next-detector.svg?style=flat-square
-
 [coveralls-url]: https://coveralls.io/r/lxzxl/koa-i18next-detector
 [coveralls-image]: https://img.shields.io/coveralls/lxzxl/koa-i18next-detector.svg?style=flat-square
-
 [depstat-url]: https://david-dm.org/lxzxl/koa-i18next-detector
 [depstat-image]: https://david-dm.org/lxzxl/koa-i18next-detector.svg?style=flat-square
-
 [download-badge]: http://img.shields.io/npm/dm/koa-i18next-detector.svg?style=flat-square
