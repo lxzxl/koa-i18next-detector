@@ -5,15 +5,15 @@
     <img src="https://img.shields.io/npm/v/koa-i18next-detector.svg?style=flat-square"
          alt="NPM Version">
   </a>
-  <a href="https://github.com/lxzxl/koa-i18next-detector/actions/workflows/ci.yml">
-    <img src="https://img.shields.io/github/actions/workflow/status/lxzxl/koa-i18next-detector/ci.yml?style=flat-square"
+  <a href="https://github.com/lxzxl/koa-i18next-detector/actions/workflows/test.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/lxzxl/koa-i18next-detector/test.yml?style=flat-square"
          alt="Build Status">
   </a>
   <a href="https://npmjs.org/package/koa-i18next-detector">
     <img src="https://img.shields.io/npm/dm/koa-i18next-detector.svg?style=flat-square"
          alt="Downloads">
   </a>
-  <a href="https://github.com/lxzxl/koa-i18next-detector/blob/master/LICENSE">
+  <a href="https://github.com/lxzxl/koa-i18next-detector/blob/main/LICENSE">
     <img src="https://img.shields.io/npm/l/koa-i18next-detector.svg?style=flat-square"
          alt="License">
   </a>
